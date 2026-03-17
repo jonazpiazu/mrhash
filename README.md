@@ -55,17 +55,19 @@ pixi shell
 If you prefer to build from scratch or don't use Pixi, follow these steps:
 
 ### Prerequisites
-- CUDA 12.6 or later installed on your system
+- CUDA 12.6 through 12.x installed on your system
 - Python 3.8+ with pip
 
 ### Step 1: Install LibTorch
 
-Download and extract LibTorch with CUDA support:
+Download and extract a CUDA-enabled LibTorch build that matches your installed CUDA 12.x minor version. For CUDA 12.6, use:
 
 ```sh
 wget https://download.pytorch.org/libtorch/cu126/libtorch-shared-with-deps-2.8.0%2Bcu126.zip
 unzip libtorch-shared-with-deps-2.8.0+cu126.zip -d third_party
 ```
+
+If you are building against another CUDA 12.x toolkit, replace the archive above with the matching LibTorch package for that CUDA minor version.
 
 ### Step 2: Install the Python Package
 
@@ -74,6 +76,8 @@ Install the library in development mode:
 ```sh
 pip install -e .
 ```
+
+To point CMake at a specific CUDA toolkit, set `CUDACXX=/path/to/nvcc` or pass `-DCUDAToolkit_ROOT=/path/to/cuda` during configuration.
 
 # Usage
 

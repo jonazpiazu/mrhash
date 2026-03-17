@@ -32,12 +32,12 @@ set_target_properties(${GS_LIB_NAME} PROPERTIES
 )
 
 target_compile_options(${GS_LIB_NAME} PRIVATE -O3 -use_fast_math -Xcompiler -Ofast -lineinfo $<$<COMPILE_LANGUAGE:CUDA>: -g -lineinfo >)
-find_library(NVML_LIBRARY nvidia-ml PATHS /usr/lib/x86_64-linux-gnu)
-target_link_libraries(${GS_LIB_NAME} PUBLIC
-    ${TORCH_LIBRARIES}
-    ${CUDA_LIBRARIES}
-    tinyply
-    nlohmann_json::nlohmann_json
-    ${OpenCV_LIBS}
-    glm::glm
+target_link_libraries(${GS_LIB_NAME}
+    PUBLIC
+        ${TORCH_LIBRARIES}
+        CUDA::cudart
+        tinyply
+        nlohmann_json::nlohmann_json
+        ${OpenCV_LIBS}
+        glm::glm
 )
