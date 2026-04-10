@@ -25,7 +25,7 @@
 
 ## Prerequisites
 
-Before you begin, ensure you have an NVIDIA GPU with CUDA capabilities 
+Before you begin, ensure you have an NVIDIA GPU with CUDA capabilities
 
 ### Clone the Repository
 
@@ -87,6 +87,7 @@ This project includes pre-configured settings and scripts to get you started qui
 
 We provide ready-to-use configurations in the `configurations/` folder for:
 - **RGB-D datasets**: Replica, ScanNet
+  - For the Replica dataset, download from https://cvg-data.inf.ethz.ch/nice-slam/data/Replica.zip
 - **LiDAR datasets**: VBR, Newer College Dataset, Oxford Spires
 
 Supported data formats include:
@@ -152,11 +153,11 @@ geo_wrapper.setCamera(fx, fy, cx, cy, img_rows, img_cols, min_depth, max_depth, 
 for depth_image, rgb_image, pose, quaternion in your_data_loader:
     # Set current camera pose
     geo_wrapper.setCurrPose(pose, quaternion)
-    
+
     # Set input data (depth and RGB images as numpy arrays)
     geo_wrapper.setDepthImage(depth_image)  # numpy array (H, W) with float32
     geo_wrapper.setRGBImage(rgb_image)      # numpy array (H, W, 3) with uint8
-    
+
     # Integrate current frame into the voxel grid
     geo_wrapper.compute()
 
