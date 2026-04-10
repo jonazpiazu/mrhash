@@ -4,6 +4,7 @@ import time
 from pathlib import Path
 
 import numpy as np
+import rerun as rr
 import typer
 import yaml
 from mrhash.src.pygeowrapper import GeoWrapper
@@ -133,9 +134,36 @@ def main(
         rgbd_camera.model_,
     )
 
+    rr.init("mrhash_rgbd", spawn=True)
+    rr.log("world", rr.ViewCoordinates.RIGHT_HAND_Z_UP, static=True)
+
     for frame, pose, quat, depth_img, rgb_img in tqdm(reader, desc="processing..."):
         if frame > end_frame:
             break
+
+        rr.set_time_sequence("frame", frame)
+
+        # Log camera pose (scipy quat is xyzw, rerun expects xyzw)
+        rr.log(
+            "world/camera",
+            rr.Transform3D(
+                translation=pose,
+                rotation=rr.Quaternion(xyzw=quat),
+            ),
+        )
+
+        # Log pinhole camera and images
+        rr.log(
+            "world/camera/image",
+            rr.Pinhole(
+                focal_length=[K[0, 0], K[1, 1]],
+                principal_point=[K[0, 2], K[1, 2]],
+                resolution=[img_cols, img_rows],
+            ),
+        )
+        rr.log("world/camera/image/rgb", rr.Image(rgb_img.astype(np.uint8)))
+        rr.log("world/camera/image/depth", rr.DepthImage(depth_img))
+
         geo_wrapper.setCurrPose(pose, quat)
         geo_wrapper.setDepthImage(depth_img)
         geo_wrapper.setRGBImage(rgb_img)
