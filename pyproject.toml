@@ -74,3 +74,7 @@ ninja              = ">=1.12.1,<2"
 
 [tool.pixi.pypi-dependencies]
 mrhash = { path = ".", editable = true }
+
+[tool.pixi.tasks]
+rgb_runner = "cd mrhash/apps && python3 rgbd_runner.py"
+rebuild_cpp = "rm -rf build cp311-cp311-linux_x86_64 .eggs *.egg-info ; pip install -e . --no-build-isolation --force-reinstall"
